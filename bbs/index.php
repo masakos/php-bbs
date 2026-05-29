@@ -2,8 +2,8 @@
 // ── ① データベース接続 ────────────────────────────
 $pdo = new PDO(
     'mysql:host=localhost;dbname=mydb;charset=utf8',
-    'root',  // MySQLのユーザー名
-    ''       // MySQLのパスワード（設定していれば入力）
+    'sampleuser',  // MySQLのユーザー名
+    'password'       // MySQLのパスワード（設定していれば入力）
 );
 // エラーが起きたとき例外を投げる設定
 $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);

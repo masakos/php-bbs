@@ -111,56 +111,52 @@ sudo nano /var/www/html/info.php
 
 ブラウザで `http://localhost/info.php` を開き PHP 情報ページが表示されれば連携 OK。
 
-確認後、セキュリティのためファイルを削除する。
 
 ```bash
 sudo rm /var/www/html/info.php
 ```
 
----
 
-## 7. phpMyAdmin のインストール（任意）
-
-```bash
-sudo apt install -y phpmyadmin
-```
-
-インストール中の設定：
-
-| 質問 | 選択 |
-|------|------|
-| Web server to configure | `apache2`（スペースキーで選択 → Enter） |
-| Configure database with dbconfig-common | `Yes` |
-| phpMyAdmin の MySQL パスワード | 任意のパスワードを設定 |
-
-ブラウザで `http://localhost/phpmyadmin` にアクセスして確認。
-
----
-
-## 8. WSL 起動時にサービスを自動起動する設定（任意）
-
-WSL は再起動のたびにサービスがリセットされるため、`~/.bashrc` に追記しておくと便利。
-
-```bash
-echo 'sudo service apache2 start > /dev/null 2>&1' >> ~/.bashrc
-echo 'sudo service mysql start > /dev/null 2>&1' >> ~/.bashrc
-```
-
-sudo をパスワードなしで実行できるよう設定。
-
-```bash
-sudo visudo
-```
-
-末尾に以下を追記（`<username>` は自分のユーザー名）。
+## DB確認
 
 ```
-<username> ALL=(ALL) NOPASSWD: /usr/sbin/service apache2 *, /usr/sbin/service mysql *
+sudo mysql -u root
+SELECT USER();
+CREATE DATABASE SAMPLE01;
+SHOW DATABASES;
+use SAMPLE01;
+
+# CREATE USER 'ユーザー名'@'ホスト名' IDENTIFIED BY 'パスワード';
+# GRANT ALL PRIVILEGES ON データベース名.* TO 'ユーザー名'@'ホスト名';
+
+CREATE USER 'sampleuser'@'localhost' IDENTIFIED BY 'password';
+GRANT ALL PRIVILEGES ON SAMPLE01.* TO 'sampleuser'@'localhost';
+FLUSH PRIVILEGES;
+
+select user, host from mysql.user;
+SHOW GRANTS FOR 'sampleuser'@'localhost';
 ```
 
----
+```
+which code
+whoami
+sudo chown -R xxx /var/www/html
+```
 
-## 9. プロジェクトファイルの配置
+```
+create database mydb;
+show databases;
+CREATE USER 'masakos'@'localhost' IDENTIFIED BY 'password';
+GRANT ALL PRIVILEGES ON mydb.* TO 'masakos'@'localhost';
+select user, host from mysql.user;
+SHOW GRANTS FOR 'masakos'@'localhost';
+```
+
+
+
+
+
+## プロジェクトファイルの配置
 
 Web ドキュメントルートは `/var/www/html/`。
 
